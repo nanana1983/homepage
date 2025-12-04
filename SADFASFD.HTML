@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>★ HOME – Blue/Black Unified</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  /* 파랑→검정 통일 팔레트 */
+  --blueblack: linear-gradient(135deg, #cfe0ff 0%, #8aa2c9 28%, #4b5f80 60%, #223047 85%, #0f1622 100%);
+  --dot-grad: radial-gradient(80% 80% at 20% 20%, #a9bbd3, #223047);
+  --bg: radial-gradient(1000px 900px at 30% 10%, #f4f7fb 0%, #ebf0f8 40%, #e6ecf4 70%, #dee5ef 100%);
+  --ink: #1d2a3e; --muted:#5b6780; --line:#dbe2ec;
+  --glass: rgba(255,255,255,.58);
+  --radius:18px; --gap:16px; --shadow:0 10px 26px rgba(24,34,50,.12);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans KR",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.62);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:10px 16px;display:flex;gap:16px;align-items:center}
+.nav a{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;font-weight:800;color:#1f2a3f;text-decoration:none;background:rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.nav a .dot{width:18px;height:18px;border-radius:50%;background:var(--dot-grad);box-shadow:inset 0 1px 2px rgba(255,255,255,.85)}
+.nav a.active{background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.7));box-shadow:var(--shadow)}
+
+/* BANNER (파랑→검정 통일) */
+.banner{max-width:1280px;margin:var(--gap) auto;padding:0 16px}
+.banner-box{
+  height:160px;border-radius:24px;overflow:hidden;border:1px solid var(--line);
+  background:
+    radial-gradient(3px 3px at 10px 10px, rgba(255,255,255,.9) 30%, transparent 35%) 0 0/22px 22px,
+    radial-gradient(3px 3px at 10px 10px, rgba(255,255,255,.55) 30%, transparent 35%) 11px 11px/22px 22px,
+    var(--blueblack);
+  position:relative;box-shadow:var(--shadow)
+}
+.banner-box::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:20px;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.25) 0 10px,rgba(255,255,255,0) 10px 20px);
+  opacity:.4
+}
+
+/* GRID */
+.grid{max-width:1280px;margin:var(--gap) auto;padding:0 16px;display:grid;gap:var(--gap);grid-template-columns:280px 1fr 360px;align-items:start}
+.card{background:var(--glass);border:1px solid rgba(255,255,255,.5);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;backdrop-filter:blur(14px) saturate(140%)}
+.card h3{margin:0 0 10px;font-size:13px;letter-spacing:.6px;color:var(--muted);text-transform:uppercase}
+.left{display:grid;gap:var(--gap)} .center{display:grid;gap:var(--gap);grid-template-columns:1fr 1fr} .right{display:grid;gap:var(--gap)}
+
+/* 리스트 */
+.list{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.6));border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.item span{font-size:12px;color:var(--muted)}
+
+/* 시계/달력 */
+.clock-card{display:grid;grid-template-rows:auto 1fr;align-items:center;justify-items:center}
+#clock{font-size:52px;font-weight:900;letter-spacing:2px;margin:6px 0 10px;background:var(--blueblack);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 3px 14px rgba(80,110,150,.35)}
+.calendar{width:100%;max-width:460px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin:8px 0}
+.cal-head button{border:1px solid var(--line);background:var(--blueblack);color:#fff;font-weight:700;padding:6px 12px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-cell{height:40px;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:13px;color:#2b3750;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.65));border:1px solid var(--line)}
+.cal-cell.muted{opacity:.45}
+.cal-cell.today{background:var(--blueblack);color:#fff;font-weight:900;border:1px solid rgba(130,160,210,.6)}
+.weekday{font-size:12px;color:var(--muted)}
+
+/* 오하아사(세로 줄바꿈, 파랑→검정 칩) */
+.ohaasa .row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:none;padding:10px 14px;border-radius:14px;cursor:pointer;font-weight:800;color:#fff;background:var(--blueblack);box-shadow:var(--shadow)}
+.btn.ghost{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.65));color:#1f2a3f}
+.desc{color:var(--muted);margin:2px 0 8px}
+.rank-list{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+.rank-item{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.55));border:1px solid var(--line);box-shadow:var(--shadow)}
+.rank-dot{width:28px;height:28px;border-radius:50%;background:var(--blueblack);box-shadow:inset 0 1px 2px rgba(255,255,255,.85)}
+.rank-text{font-weight:800;color:#2b3750;font-size:15px}
+.rank-emoji{font-size:18px}
+
+/* 유튜브 플레이어(고정) */
+.player{position:sticky;top:16px;border-radius:18px;overflow:hidden;padding:0;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.6);box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+.player-head{padding:10px 12px;background:var(--blueblack);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.player-title{display:flex;gap:8px;align-items:center;font-weight:800}
+.ctrls{display:flex;gap:6px}
+.ctrls button{border:none;background:#ffffff22;color:#fff;padding:6px 9px;border-radius:10px;cursor:pointer;font-weight:800}
+#ytWrap{width:100%;height:200px}
+.bar-wrap{height:6px;background:rgba(235,240,255,.85);margin:0 12px 10px;border-radius:999px;overflow:hidden}
+.bar{height:100%;width:0%;background:var(--blueblack)}
+.meta{display:flex;justify-content:space-between;padding:0 12px 12px;font-size:12px;color:#5e6a86}
+
+@media (max-width:1100px){
+  .grid{grid-template-columns:1fr;gap:18px}
+  .center{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="active" href="#"><span class="dot"></span>HOME</a>
+      <a href="#"><span class="dot"></span>NOTION</a>
+      <a href="#"><span class="dot"></span>Timeline</a>
+      <a href="#"><span class="dot"></span>Portfolio</a>
+      <a href="#"><span class="dot"></span>ORPG</a>
+    </div>
+  </div>
+
+  <!-- BANNER -->
+  <div class="banner"><div class="banner-box"></div></div>
+
+  <!-- GRID -->
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="left">
+      <div class="card">
+        <h3>Timeline</h3>
+        <div class="list">
+          <div class="item"><b>방명록 페이지</b><span>10.24</span></div>
+          <div class="item"><b>Re: 방명록 페이지</b><span>10.24</span></div>
+          <div class="item"><b>Re: 방명록 페이지</b><span>10.24</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="center">
+      <!-- 시계 + 달력 -->
+      <div class="card clock-card">
+        <h3>네이버 시계 · 달력</h3>
+        <div id="clock">--:--:--</div>
+        <div class="calendar">
+          <div class="cal-head">
+            <button id="prevM">◀</button>
+            <div><strong id="calTitle">2025. 11</strong></div>
+            <button id="nextM">▶</button>
+          </div>
+          <div class="cal-grid" id="weekday">
+            <div class="weekday">일</div><div class="weekday">월</div><div class="weekday">화</div>
+            <div class="weekday">수</div><div class="weekday">목</div><div class="weekday">금</div><div class="weekday">토</div>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+      </div>
+
+      <!-- 오하아사 -->
+      <div class="card ohaasa">
+        <h3>오하아사 · 오늘의 상위 5</h3>
+        <p class="desc">트윗 본문을 붙여넣으면 1~5위가 자동 파싱되어 저장됩니다.</p>
+        <div class="row">
+          <button class="btn" onclick="openProfile()">프로필 열기 (@Hi_Ohaasa)</button>
+          <button class="btn ghost" onclick="pasteSample()">샘플</button>
+          <button class="btn" onclick="pasteToday()">오늘 트윗 텍스트 붙여넣기</button>
+          <button class="btn ghost" onclick="clearRanks()">지우기</button>
+        </div>
+        <div class="rank-list" id="rankList"></div>
+        <div class="date" id="rankDate" style="margin-top:8px;color:#5e6a86"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+      <div class="card player">
+        <div class="player-head">
+          <div class="player-title"><span id="trackTitle">Love story</span><span id="trackArtist" style="opacity:.9">Indila</span></div>
+          <div class="ctrls">
+            <button id="prevBtn">◀</button>
+            <button id="playBtn">▶︎/⏸</button>
+            <button id="nextBtn">▶</button>
+            <button id="loopBtn">⟲</button>
+          </div>
+        </div>
+        <div id="ytWrap" style="display:none"><div id="player"></div></div>
+        <div class="bar-wrap" id="seekWrap"><div class="bar" id="bar"></div></div>
+        <div class="meta"><span id="elapsed">0:00</span><span id="duration">0:00</span></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ===== CLOCK ===== */
+const clockEl=document.getElementById('clock');const two=n=>String(n).padStart(2,'0');
+function tick(){const d=new Date();clockEl.textContent=`${two(d.getHours())}:${two(d.getMinutes())}:${two(d.getSeconds())}`;}
+setInterval(tick,1000);tick();
+
+/* ===== CALENDAR ===== */
+const calTitle=document.getElementById('calTitle');const calGrid=document.getElementById('calGrid');
+let view=new Date();view.setDate(1);
+function renderCalendar(){
+  calGrid.innerHTML='';
+  const y=view.getFullYear(),m=view.getMonth();calTitle.textContent=`${y}. ${m+1}`;
+  const first=new Date(y,m,1),start=first.getDay();
+  const last=new Date(y,m+1,0).getDate();
+  const prevLast=new Date(y,m,0).getDate();
+  for(let i=0;i<start;i++) addCell(prevLast-start+1+i,true);
+  const today=new Date();
+  for(let d=1;d<=last;d++){const c=addCell(d,false);if(y===today.getFullYear()&&m===today.getMonth()&&d===today.getDate()) c.classList.add('today');}
+  const filled=start+last;for(let i=0;i<(7-(filled%7))%7;i++) addCell(i+1,true);
+}
+function addCell(text,muted){const c=document.createElement('div');c.className='cal-cell'+(muted?' muted':'');c.textContent=text;calGrid.appendChild(c);return c;}
+document.getElementById('prevM').onclick=()=>{view.setMonth(view.getMonth()-1);renderCalendar();}
+document.getElementById('nextM').onclick=()=>{view.setMonth(view.getMonth()+1);renderCalendar();}
+renderCalendar();
+
+/* ===== OHAASA ===== */
+const KEY_RANKS='ohaasa_ranks_blueUnified',KEY_DATE='ohaasa_date_blueUnified';
+const list=document.getElementById('rankList'),dateEl=document.getElementById('rankDate');
+function openProfile(){window.open('https://x.com/Hi_Ohaasa','_blank');}
+function renderRanks(ranks){
+  list.innerHTML='';
+  (ranks?.length?ranks:[{rank:1,name:'-'},{rank:2,name:'-'},{rank:3,name:'-'},{rank:4,name:'-'},{rank:5,name:'-'}])
+    .forEach(r=>{
+      const el=document.createElement('div');
+      el.className='rank-item';
+      el.innerHTML=`<span class="rank-dot"></span><span class="rank-text">${r.rank}위 ${r.name}</span><span class="rank-emoji">${zodiacEmoji(r.name)}</span>`;
+      list.appendChild(el);
+    });
+  dateEl.textContent=localStorage.getItem(KEY_DATE)||'';
+}
+function saveRanks(r){
+  localStorage.setItem(KEY_RANKS,JSON.stringify(r));
+  const d=new Date();localStorage.setItem(KEY_DATE,`업데이트: ${d.getFullYear()}.${two(d.getMonth()+1)}.${two(d.getDate())}`);
+}
+function clearRanks(){localStorage.removeItem(KEY_RANKS);localStorage.removeItem(KEY_DATE);renderRanks([]);}
+function loadRanks(){try{renderRanks(JSON.parse(localStorage.getItem(KEY_RANKS)||'[]'));}catch{renderRanks([]);}}
+function parseFromText(text){
+  const t=text.replace(/\r/g,'').trim();const rx=/([1-5])\s*위[\s:：\-–~]*([^\n\r]+)/g;let m,res=[];
+  while((m=rx.exec(t))!==null){const rank=+m[1];let name=m[2].trim().replace(/[\s·•\-–—]+$/,'');name=name.replace(/\s+[2-5]\s*위.*$/,'').trim();res[rank-1]={rank,name};}
+  const top5=res.filter(Boolean).sort((a,b)=>a.rank-b.rank).slice(0,5);
+  if(!top5.length){alert('상위 5를 찾지 못했어요. 트윗 본문을 그대로 붙여넣어 주세요.');return;}
+  saveRanks(top5);renderRanks(top5);
+}
+function pasteToday(){const text=prompt('오늘자 트윗 본문을 붙여넣어 주세요.\n예) 1위 양자리 … 2위 … 3위 … 4위 … 5위 …');if(text) parseFromText(text);}
+function pasteSample(){parseFromText(`1위 양자리\n2위 물병자리\n3위 게자리\n4위 처녀자리\n5위 황소자리`);}
+function zodiacEmoji(name){
+  const n=(name||'').replace('자리','').trim();
+  const map={'양':'♈︎','황소':'♉︎','쌍둥이':'♊︎','게':'♋︎','사자':'♌︎','처녀':'♍︎','천칭':'♎︎','전갈':'♏︎','사수':'♐︎','염소':'♑︎','물병':'♒︎','물고기':'♓︎','-':'✨'};
+  for(const k in map) if(n.startsWith(k)) return map[k]; return '✨';
+}
+loadRanks();
+
+/* ===== YouTube (nocookie + sticky) ===== */
+const VIDEOS=[{id:'ScNNfyq3d_w',title:'Love story',artist:'Indila'},{id:'Zi_XLOBDo_Y',title:'夜に駆ける',artist:'YOASOBI'}];
+let idx=0, loop=false, player=null, timer=null, ytReady=false;
+const tag=document.createElement('script');tag.src="https://www.youtube.com/iframe_api";document.body.appendChild(tag);
+window.onYouTubeIframeAPIReady=function(){
+  ytReady=true;
+  player=new YT.Player('player',{height:'200',width:'560',videoId:VIDEOS[idx].id,host:'https://www.youtube-nocookie.com',
+    playerVars:{playsinline:1,autoplay:0,controls:1,rel:0,origin:location.origin},
+    events:{onReady:onReady,onStateChange:onState,onError:onError}});
+  document.getElementById('ytWrap').style.display='block'; setMeta();
+};
+function onError(e){console.warn('YouTube error:',e.data);next();}
+function onReady(){if(timer) clearInterval(timer);timer=setInterval(updateTimeUI,500);}
+function onState(e){if(e.data===YT.PlayerState.ENDED){if(loop){player.seekTo(0);player.playVideo();}else next();}}
+function setMeta(){document.getElementById('trackTitle').textContent=VIDEOS[idx].title;document.getElementById('trackArtist').textContent=VIDEOS[idx].artist;}
+function load(i){idx=(i+VIDEOS.length)%VIDEOS.length;player.loadVideoById(VIDEOS[idx].id);setMeta();}
+function playToggle(){if(!ytReady) return;const s=player.getPlayerState();if(s===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo();}
+function next(){load(idx+1)} function prev(){load(idx-1)}
+function updateTimeUI(){if(!player||typeof player.getDuration!=='function') return;const d=player.getDuration()||0,c=player.getCurrentTime()||0;document.getElementById('bar').style.width=(d?c/d*100:0)+'%';document.getElementById('elapsed').textContent=fmt(c);document.getElementById('duration').textContent=fmt(d);}
+function fmt(s){const m=Math.floor(s/60),x=Math.floor(s%60);return `${m}:${String(x).padStart(2,'0')}`;}
+document.getElementById('playBtn').onclick=playToggle;
+document.getElementById('nextBtn').onclick=next;
+document.getElementById('prevBtn').onclick=prev;
+document.getElementById('loopBtn').onclick=()=>{loop=!loop;document.getElementById('loopBtn').style.opacity=loop?1:.6;};
+document.getElementById('seekWrap').addEventListener('click',e=>{if(!player) return;const r=e.currentTarget.getBoundingClientRect();const ratio=(e.clientX-r.left)/r.width;player.seekTo(ratio*(player.getDuration()||0),true);});
+</script>
+</body>
+</html>

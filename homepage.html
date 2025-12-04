@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>★ Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --ink:#2b2f3a;
+      --muted:#7b8596;
+      --accent:#6b86a4;
+      --accent-2:#495870;
+      --shadow: 0 8px 20px rgba(20,30,50,.08);
+      --radius:18px;
+      --gap:18px;
+      --banner-dots: radial-gradient(circle at 1px 1px, rgba(255,255,255,.9) 1px, rgba(255,255,255,0) 2px);
+      --grad: linear-gradient(90deg,#a9bdca, #8897ad, #4a566c);
+      --chip:#eef2f7;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:"Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      letter-spacing:.1px;
+    }
+    a{color:var(--accent-2); text-decoration:none}
+    a:hover{opacity:.85}
+    /* Top nav */
+    .nav{
+      position:sticky; top:0; z-index:5;
+      backdrop-filter:saturate(1.2) blur(6px);
+      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.65));
+      border-bottom:1px solid #e6e9ef;
+    }
+    .nav-inner{
+      max-width:1200px; margin:0 auto; padding:14px 20px;
+      display:flex; gap:24px; align-items:center; justify-content:flex-start;
+    }
+    .nav a{padding:8px 12px; border-radius:999px; font-weight:600}
+    .nav a.active{background:var(--chip)}
+    /* Banner */
+    .banner{
+      max-width:1200px; margin:18px auto 0; padding:0 20px;
+    }
+    .banner-box{
+      height:150px; border-radius:var(--radius);
+      background:
+        var(--banner-dots) 0 0/14px 14px,
+        var(--grad);
+      box-shadow:var(--shadow);
+      position:relative; overflow:hidden;
+      border:1px solid #e7ebf3;
+    }
+    .banner-ribbon{
+      position:absolute; bottom:0; left:0; right:0; height:26px;
+      background:repeating-linear-gradient(90deg, #fff 0 8px, #f6f8fb 8px 16px);
+      border-top:1px dashed #e6e6ef;
+      opacity:.9;
+    }
+    /* Layout grid */
+    .grid{
+      max-width:1200px; margin:18px auto 40px; padding:0 20px;
+      display:grid; gap:var(--gap);
+      grid-template-columns:260px 1fr 320px;
+      grid-template-areas:
+        "left center right";
+    }
+    /* Cards */
+    .card{
+      background:var(--card); border:1px solid #ecf0f6;
+      border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:16px;
+    }
+    .card h3{
+      margin:0 0 12px; font-size:14px; letter-spacing:.6px; color:var(--muted);
+      text-transform:uppercase;
+    }
+    .list{display:flex; flex-direction:column; gap:10px}
+    .item{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 10px; border-radius:12px; background:#fafbfd; border:1px solid #eef2f8}
+    .item span{font-size:13px; color:var(--muted)}
+    .link-more{display:block; text-align:center; margin-top:10px; font-size:13px}
+    /* Center stack */
+    .center{
+      grid-area:center; display:grid; gap:var(--gap);
+      grid-template-columns:1fr 1fr;
+    }
+    .clockbox{display:grid; grid-template-columns:1fr; align-items:center; justify-items:center; padding:20px}
+    #clock{font-size:44px; font-weight:700; letter-spacing:2px}
+    .calendar{width:100%; max-width:420px}
+    .cal-head{display:flex; align-items:center; justify-content:space-between; margin:12px 0 8px}
+    .cal-head button{border:none; background:var(--chip); padding:6px 10px; border-radius:10px; cursor:pointer}
+    .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
+    .cal-cell{height:42px; display:flex; align-items:center; justify-content:center; border-radius:10px; font-size:13px; color:var(--accent-2)}
+    .cal-cell.muted{opacity:.4}
+    .cal-cell.today{background:var(--accent); color:#fff; font-weight:700}
+    .weekday{font-size:12px; color:var(--muted); text-transform:uppercase}
+    /* About / 오하아사 */
+    .about p{color:var(--muted); line-height:1.6}
+    .oh-links{display:flex; gap:8px; margin-top:10px}
+    .oh-links input{flex:1; padding:10px 12px; border-radius:10px; border:1px solid #e3e8f1; outline:none}
+    .btn{background:var(--grad); color:#fff; border:none; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600}
+    /* Right column */
+    .right{grid-area:right; display:grid; gap:var(--gap); grid-auto-rows:min-content}
+    .profile{
+      display:flex; gap:12px; align-items:center;
+    }
+    .avatar{
+      width:46px; height:46px; border-radius:50%; background:linear-gradient(135deg,#ccd7e4,#99a9c2);
+      display:grid; place-items:center; color:#fff; font-weight:800
+    }
+    .status input, .status textarea{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid #e3e8f1; outline:none; font-size:14px
+    }
+    .status .row{display:flex; gap:8px; margin-top:8px}
+    .chips{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+    .chip{background:var(--chip); color:var(--accent-2); padding:6px 10px; border-radius:999px; font-size:12px}
+    /* YouTube player (bottom-right) */
+    .player{
+      position:sticky; bottom:10px;
+      border-radius:16px; overflow:hidden; padding:0; border:1px solid #e6ebf3;
+    }
+    .player-head{
+      padding:12px 14px; background:var(--grad); color:#fff; display:flex; align-items:center; justify-content:space-between; gap:10px
+    }
+    .player-title{display:flex; gap:16px; align-items:center; font-weight:700}
+    .player-ctrls{display:flex; gap:8px}
+    .player-ctrls button{
+      border:none; background:#ffffff22; color:#fff; padding:6px 10px; border-radius:10px; cursor:pointer; font-weight:600
+    }
+    .bar-wrap{height:8px; background:#e9eef6; margin:0 14px 14px; border-radius:999px; overflow:hidden; position:relative}
+    .bar{height:100%; width:0%; background:linear-gradient(90deg,#cfe0ff,#90a7d6,#5c6d93)}
+    .meta{display:flex; justify-content:space-between; padding:0 14px 12px; font-size:12px; color:var(--muted)}
+    /* Left column */
+    .left{grid-area:left; display:grid; gap:var(--gap)}
+    /* Responsive */
+    @media (max-width: 1024px){
+      .grid{grid-template-columns:1fr; grid-template-areas:"center" "left" "right"}
+      .center{grid-template-columns:1fr}
+      .player{position:relative}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="active">★ HOME</a>
+      <a href="#">★ NOTION</a>
+      <a href="#">★ Timeline</a>
+      <a href="#">★ Portfolio</a>
+      <a href="#">★ ORPG</a>
+    </div>
+  </div>
+
+  <!-- BANNER -->
+  <div class="banner">
+    <div class="banner-box">
+      <div class="banner-ribbon"></div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="left">
+      <div class="card">
+        <h3>Timeline</h3>
+        <div class="list" id="timeline-list">
+          <div class="item"><b>방명록 페이지</b><span>10.24</span></div>
+          <div class="item"><b>Re: 방명록 페이지</b><span>10.24</span></div>
+          <div class="item"><b>Re: 방명록 페이지</b><span>10.24</span></div>
+        </div>
+        <a class="link-more" href="#">더보기</a>
+      </div>
+
+      <div class="card">
+        <h3>LOGO</h3>
+        <div class="list">
+          <div class="item"><b>와랄 깽깽한/ 동서</b><span>10.24</span></div>
+          <div class="item"><b>클린/ 깔끔/ 세련됨</b><span>10.24</span></div>
+          <div class="item"><b>파도/ 잔망/ 장난스러운</b><span>10.24</span></div>
+          <div class="item"><b>마지막/ 깔끔한</b><span>10.24</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>전체 최신글</h3>
+        <div class="list">
+          <div class="item"><b>Bloody Hell Buddy</b><span>10.25</span></div>
+          <div class="item"><b>Polaris Project 보고서</b><span>10.25</span></div>
+          <div class="item"><b>CLICK 릴리즈</b><span>10.24</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="center">
+      <div class="card clockbox">
+        <div id="clock">--:--:--</div>
+        <div class="calendar">
+          <div class="cal-head">
+            <button id="prevM">◀</button>
+            <div>
+              <strong id="calTitle">2025. 11</strong>
+              <div style="font-size:12px;color:var(--muted);">네이버 달력 스타일</div>
+            </div>
+            <button id="nextM">▶</button>
+          </div>
+          <div class="cal-grid" id="weekday">
+            <div class="weekday">일</div><div class="weekday">월</div><div class="weekday">화</div><div class="weekday">수</div><div class="weekday">목</div><div class="weekday">금</div><div class="weekday">토</div>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+      </div>
+
+      <div class="card about">
+        <h3>ABOUT · 오하아사 연동</h3>
+        <p id="aboutText">이 곳은 자기소개/공지를 적는 블록입니다. 아래 입력창에 “네이버 오하아사” 또는 원하는 글 링크를 붙여 넣고 열어 보세요.</p>
+        <div class="oh-links">
+          <input id="ohLink" placeholder="네이버 오하아사(또는 글) 링크 입력" />
+          <button class="btn" id="openOh">열기</button>
+        </div>
+        <div class="oh-links" style="margin-top:8px">
+          <input id="naverCal" placeholder="네이버 캘린더 주소(선택)" />
+          <button class="btn" id="openCal">캘린더</button>
+        </div>
+        <div class="chips" id="aboutChips">
+          <span class="chip">Have a Nice Day (˘◡˘)७</span>
+          <span class="chip">#daily</span>
+          <span class="chip">#log</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+      <div class="card">
+        <h3>내 활동</h3>
+        <div class="profile">
+          <div class="avatar">A</div>
+          <div>
+            <div style="font-weight:700">admin</div>
+            <div style="font-size:12px;color:var(--muted)">Lv.10 · 활동</div>
+          </div>
+        </div>
+        <div class="status" style="margin-top:12px">
+          <textarea id="status" rows="3" placeholder="지금 무엇을 하고 있나요? (우측 패널 · 로컬 저장)"></textarea>
+          <div class="row">
+            <button class="btn" id="saveStatus">저장</button>
+            <button class="btn" id="clearStatus" style="background:#e8edf6; color:#2b2f3a;">지우기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- YOUTUBE PLAYER -->
+      <div class="card player">
+        <div class="player-head">
+          <div class="player-title">
+            <span id="trackTitle">Love story</span>
+            <span style="opacity:.9" id="trackArtist">Indila</span>
+          </div>
+          <div class="player-ctrls">
+            <button id="prevBtn">◀</button>
+            <button id="playBtn">▶︎/⏸</button>
+            <button id="nextBtn">▶</button>
+            <button id="loopBtn">⟲</button>
+          </div>
+        </div>
+        <div id="ytWrap" style="width:100%; aspect-ratio:16/9; display:none">
+          <div id="player"></div>
+        </div>
+        <div class="bar-wrap" id="seekWrap" title="진행바 클릭으로 이동">
+          <div class="bar" id="bar"></div>
+        </div>
+        <div class="meta"><span id="elapsed">0:00</span><span id="duration">0:00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ---------- CLOCK ---------- */
+    const clockEl = document.getElementById('clock');
+    const two = n => String(n).padStart(2,'0');
+    function tick(){
+      const d = new Date();
+      clockEl.textContent = `${two(d.getHours())}:${two(d.getMinutes())}:${two(d.getSeconds())}`;
+      requestAnimationFrame(()=>{}); // keep UI fresh
+    }
+    setInterval(tick, 1000); tick();
+
+    /* ---------- CALENDAR (네이버 스타일 느낌) ---------- */
+    const calTitle = document.getElementById('calTitle');
+    const calGrid  = document.getElementById('calGrid');
+    let view = new Date(); view.setDate(1);
+    function renderCalendar(){
+      calGrid.innerHTML = '';
+      const year = view.getFullYear(), month = view.getMonth();
+      calTitle.textContent = `${year}. ${month+1}`;
+      const first = new Date(year, month, 1);
+      const startIdx = first.getDay();
+      const lastDate = new Date(year, month+1, 0).getDate();
+      const prevLastDate = new Date(year, month, 0).getDate();
+      // prev tail
+      for(let i=0;i<startIdx;i++){
+        const cell = document.createElement('div');
+        cell.className='cal-cell muted';
+        cell.textContent = prevLastDate - startIdx + 1 + i;
+        calGrid.appendChild(cell);
+      }
+      // current
+      const today = new Date();
+      for(let d=1; d<=lastDate; d++){
+        const cell = document.createElement('div');
+        cell.className='cal-cell';
+        if (year===today.getFullYear() && month===today.getMonth() && d===today.getDate()){
+          cell.classList.add('today');
+        }
+        cell.textContent = d;
+        calGrid.appendChild(cell);
+      }
+      // next head
+      const filled = startIdx + lastDate;
+      for(let i=0; i<(7 - (filled % 7)) % 7; i++){
+        const cell = document.createElement('div');
+        cell.className='cal-cell muted';
+        cell.textContent = i+1;
+        calGrid.appendChild(cell);
+      }
+    }
+    renderCalendar();
+    document.getElementById('prevM').onclick = ()=>{ view.setMonth(view.getMonth()-1); renderCalendar(); }
+    document.getElementById('nextM').onclick = ()=>{ view.setMonth(view.getMonth()+1); renderCalendar(); }
+
+    /* ---------- ABOUT / 오하아사 & 네이버 캘린더 링크 열기 ---------- */
+    document.getElementById('openOh').onclick = ()=>{
+      const url = document.getElementById('ohLink').value.trim();
+      if(!url) return alert('네이버 오하아사(또는 글) 링크를 입력해주세요.');
+      window.open(url, '_blank');
+    };
+    document.getElementById('openCal').onclick = ()=>{
+      const url = document.getElementById('naverCal').value.trim() || 'https://calendar.naver.com/';
+      window.open(url, '_blank');
+    };
+
+    /* ---------- STATUS (Right) : localStorage ---------- */
+    const statusEl = document.getElementById('status');
+    const STATUS_KEY = 'home_status_v1';
+    statusEl.value = localStorage.getItem(STATUS_KEY) || '';
+    document.getElementById('saveStatus').onclick = ()=>{
+      localStorage.setItem(STATUS_KEY, statusEl.value);
+      alert('저장되었습니다.');
+    };
+    document.getElementById('clearStatus').onclick = ()=>{
+      statusEl.value=''; localStorage.removeItem(STATUS_KEY);
+    };
+
+    /* ---------- YOUTUBE PLAYER ---------- */
+    // 원하는 영상/플레이리스트로 바꿔 쓰세요.
+    // 단일 영상 예: VIDEO_IDS = [{id:'ScNNfyq3d_w', title:'Love story', artist:'Indila'}]
+    const VIDEO_IDS = [
+      { id:'ScNNfyq3d_w', title:'Love story', artist:'Indila' }, // 샘플
+      { id:'Zi_XLOBDo_Y', title:'夜に駆ける', artist:'YOASOBI' }  // 샘플
+    ];
+    let ytReady=false, player=null, idx=0, loop=false, timer=null;
+
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+
+    window.onYouTubeIframeAPIReady = function(){
+      ytReady=true;
+      player = new YT.Player('player', {
+        height: '315', width: '560',
+        videoId: VIDEO_IDS[idx].id,
+        playerVars:{ 'playsinline':1, 'autoplay':0, 'controls':1, 'rel':0 },
+        events: {
+          'onReady': onReady,
+          'onStateChange': onState
+        }
+      });
+      document.getElementById('ytWrap').style.display='block';
+      setMeta();
+    };
+
+    function onReady(){
+      updateTimeUI();
+      if(timer) clearInterval(timer);
+      timer = setInterval(updateTimeUI, 500);
+    }
+    function onState(e){
+      if(e.data === YT.PlayerState.ENDED){
+        if(loop){ player.seekTo(0); player.playVideo(); }
+        else next();
+      }
+    }
+    function setMeta(){
+      document.getElementById('trackTitle').textContent = VIDEO_IDS[idx].title || 'YouTube';
+      document.getElementById('trackArtist').textContent = VIDEO_IDS[idx].artist || '';
+    }
+    function load(i){
+      idx = (i+VIDEO_IDS.length)%VIDEO_IDS.length;
+      player.loadVideoById(VIDEO_IDS[idx].id);
+      setMeta();
+    }
+    function playToggle(){
+      if(!ytReady) return;
+      const s = player.getPlayerState();
+      if(s===YT.PlayerState.PLAYING) player.pauseVideo();
+      else player.playVideo();
+    }
+    function next(){ load(idx+1) }
+    function prev(){ load(idx-1) }
+    function updateTimeUI(){
+      if(!player || typeof player.getDuration!=='function') return;
+      const dur = player.getDuration() || 0;
+      const cur = player.getCurrentTime() || 0;
+      const pct = dur? (cur/dur*100) : 0;
+      document.getElementById('bar').style.width = pct + '%';
+      document.getElementById('elapsed').textContent = toMMSS(cur);
+      document.getElementById('duration').textContent = toMMSS(dur);
+    }
+    function toMMSS(sec){
+      const m = Math.floor(sec/60), s = Math.floor(sec%60);
+      return `${m}:${String(s).padStart(2,'0')}`;
+    }
+    // Controls
+    document.getElementById('playBtn').onclick = playToggle;
+    document.getElementById('nextBtn').onclick = next;
+    document.getElementById('prevBtn').onclick = prev;
+    document.getElementById('loopBtn').onclick = ()=>{
+      loop=!loop;
+      document.getElementById('loopBtn').style.opacity = loop? 1 : .6;
+    };
+    // Seek by clicking bar
+    document.getElementById('seekWrap').addEventListener('click', (e)=>{
+      if(!player) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+      const ratio = x / rect.width;
+      const newT = ratio * (player.getDuration()||0);
+      player.seekTo(newT, true);
+    });
+  </script>
+</body>
+</html>
