@@ -1,0 +1,356 @@
+:root{
+  --bg:#eef2f5;
+  --surface:#fff;
+  --ink:#2c3240;
+  --muted:#7b8596;
+  --line:#e6ebf3;
+
+  --grad:linear-gradient(90deg,#a9bdca 0%, #8897ad 48%, #2f3c55 100%);
+  --dot-grad: radial-gradient(80% 80% at 20% 20%, #c6d2dd, #4a586f);
+
+  --chip:#f3f7fb;
+  --shadow:0 10px 28px rgba(20,30,50,.08);
+  --radius:18px;
+  --gap:12px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* ================= NAV ================= */
+
+.nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+
+.nav-inner{
+  max-width:1280px;
+  margin:0 auto;
+  padding:8px 12px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.nav a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:700;
+  color:#39465a;
+  text-decoration:none;
+}
+
+.nav a.active{
+  background:linear-gradient(180deg,#fff,#f3f7fc);
+}
+
+.nav a .dot{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--dot-grad);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.5);
+}
+
+/* ================= BANNER ================= */
+
+.banner{
+  max-width:1280px;
+  margin:12px auto 0;
+  padding:0 12px;
+}
+
+.banner-box{
+  height:140px;
+  border-radius:20px;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  background:var(--grad);
+}
+
+/* ================= GRID LAYOUT ================= */
+
+.grid{
+  max-width:1280px;
+  margin:12px auto 8px;   /* 하단 기준선 */
+  padding:0 12px;
+  display:grid;
+  gap:var(--gap);
+  grid-template-columns:280px 1fr 360px;
+  grid-template-areas:"left center right";
+  align-items:start;
+}
+
+.left{grid-area:left;display:grid;gap:var(--gap);}
+.center{grid-area:center;display:grid;gap:var(--gap);grid-template-columns:1fr 1fr;}
+.right{grid-area:right;display:grid;gap:var(--gap);}
+
+/* ================= CARD ================= */
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:12px;
+}
+
+.card h3{
+  margin:0 0 8px;
+  font-size:13px;
+  letter-spacing:.6px;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+/* ================= LIST ================= */
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:12px;
+  background:#fafbfd;
+  border:1px solid #eef2f8;
+}
+
+.item span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* ================= CLOCK / CALENDAR ================= */
+
+.clock-card{
+  display:grid;
+  grid-template-rows:auto 1fr;
+  align-items:center;
+  justify-items:center;
+}
+
+#clock{
+  font-size:48px;
+  font-weight:800;
+  letter-spacing:2px;
+  margin:8px 0 6px;
+}
+
+.calendar{
+  width:100%;
+  max-width:440px;
+}
+
+.cal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:8px 0;
+}
+
+.cal-head button{
+  border:none;
+  background:var(--chip);
+  padding:6px 10px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.cal-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+
+.weekday{
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  text-align:center;
+}
+
+.cal-cell{
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  font-size:13px;
+  color:#4a566c;
+}
+
+.cal-cell.muted{opacity:.4;}
+.cal-cell.today{
+  background:#6b86a4;
+  color:#fff;
+  font-weight:800;
+}
+
+/* ================= OHAASA ================= */
+
+.ohaasa .row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  background:var(--grad);
+  color:#fff;
+  border:none;
+  padding:8px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.btn.ghost{
+  background:#e9edf6;
+  color:#2c3240;
+}
+
+.desc{
+  color:var(--muted);
+  margin:0 0 6px;
+}
+
+.grid5{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+}
+
+.rank{
+  display:grid;
+  gap:6px;
+  border:1px solid #eef2f8;
+  background:#fafbfd;
+  border-radius:14px;
+  padding:10px;
+  text-align:center;
+}
+
+.badge{
+  width:30px;
+  height:30px;
+  border-radius:10px;
+  background:var(--chip);
+  display:grid;
+  place-items:center;
+  font-weight:800;
+}
+
+.name{
+  font-size:14px;
+  color:#39465a;
+}
+
+.date{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+  text-align:right;
+}
+
+/* ================= PLAYER ================= */
+
+.player{
+  position:sticky;
+  top:12px;
+  border-radius:14px;
+  overflow:hidden;
+  padding:0;
+  border:1px solid var(--line);
+}
+
+.player-head{
+  padding:8px 10px;
+  background:var(--grad);
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.player-title{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-weight:700;
+}
+
+.ctrls{
+  display:flex;
+  gap:6px;
+}
+
+.ctrls button{
+  border:none;
+  background:#ffffff22;
+  color:#fff;
+  padding:5px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+#ytWrap{
+  width:100%;
+  height:200px;
+}
+
+.bar-wrap{
+  height:6px;
+  background:#e9eef6;
+  margin:0 10px 10px;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#cfe0ff,#90a7d6,#5c6d93);
+}
+
+.meta{
+  display:flex;
+  justify-content:space-between;
+  padding:0 10px 10px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:1100px){
+  .grid{
+    grid-template-columns:1fr;
+    grid-template-areas:"center" "left" "right";
+    margin-bottom:8px;
+  }
+  .center{grid-template-columns:1fr;}
+  .grid5{grid-template-columns:repeat(2,1fr);}
+}
