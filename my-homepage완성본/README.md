@@ -39,16 +39,26 @@
 ## 페이지 구성 및 기능
 
 ###  Home (index.html)
+
+<img width="1044" height="528" alt="image" src="https://github.com/user-attachments/assets/a23f625a-8dff-4da2-9960-5184e2dd9be9" />
+
 - Timeline / Portfolio의 최근 게시글 요약 표시
 - LocalStorage에 저장된 데이터를 읽어와 렌더링
 - 메인 대시보드 역할
 
 ###  Timeline (timeline.html)
+
+<img width="843" height="381" alt="image" src="https://github.com/user-attachments/assets/d08ecc57-7a81-4d3f-af07-45055947c909" />
+
+
 - 사용자 방명록 작성 및 목록 표시
 - 글 작성 시 LocalStorage에 즉시 저장
 - 최신 글이 상단에 표시되도록 구현
 
 ###  Portfolio (portfolio.html)
+
+<img width="949" height="457" alt="image" src="https://github.com/user-attachments/assets/98595375-bff4-4b0c-b578-a81bb4dcbe3c" />
+
 - 포트폴리오 게시글 작성
 - 텍스트 및 파일(이미지) 저장 가능
 - LocalStorage를 이용한 게시글 관리
