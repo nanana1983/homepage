@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PORTFOLIO</title>
+
+<style>
+:root{
+  --bg:#eef2f5; --card:#fff; --ink:#2c3240;
+  --muted:#7b8596; --line:#e6ebf3; --accent:#5f7ea6;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:"Noto Sans KR",system-ui,sans-serif;
+  background:var(--bg); color:var(--ink);
+}
+
+/* nav */
+.nav{
+  display:flex; gap:20px; padding:14px 24px;
+  background:#fff; border-bottom:1px solid var(--line);
+}
+.nav a{
+  text-decoration:none; color:var(--muted); font-size:14px;
+  display:flex; align-items:center; gap:6px;
+}
+.nav a.active{color:var(--ink); font-weight:600}
+.dot{width:10px;height:10px;border-radius:50%;
+  background:linear-gradient(145deg,#bfc9d6,#5f6b7a)}
+
+/* layout */
+main{max-width:1000px;margin:0 auto;padding:24px}
+h1{font-size:20px;margin-bottom:12px}
+
+/* write */
+.write{
+  background:var(--card); border-radius:16px;
+  padding:16px; margin-bottom:20px;
+  border:1px solid var(--line);
+}
+.write textarea{
+  width:100%; min-height:90px; resize:none;
+  border-radius:12px; border:1px solid var(--line);
+  padding:12px; font-size:14px;
+}
+.write .actions{
+  display:flex; justify-content:space-between;
+  align-items:center; margin-top:10px;
+}
+.write label{
+  font-size:13px; color:var(--muted); cursor:pointer;
+}
+.write input{display:none}
+.write button{
+  border:0; padding:8px 16px; border-radius:999px;
+  background:var(--accent); color:#fff; cursor:pointer;
+}
+
+/* grid */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:16px;
+}
+.item{
+  background:var(--card); border-radius:14px;
+  border:1px solid var(--line); overflow:hidden;
+}
+.preview{
+  height:140px; background:#f4f6f9;
+  display:flex; align-items:center; justify-content:center;
+}
+.preview img{width:100%;height:100%;object-fit:cover}
+.file{font-size:40px}
+.meta{padding:12px}
+.meta .text{
+  font-size:14px; line-height:1.5; white-space:pre-wrap;
+  margin-bottom:8px;
+}
+.meta .name{font-size:12px;color:var(--muted)}
+.meta button{
+  margin-top:8px; border:0; background:#e6ebf3;
+  border-radius:8px; padding:6px 10px;
+  font-size:12px; cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="nav">
+  <a href="index.html"><span class="dot"></span>HOME</a>
+  <a href="timeline.html"><span class="dot"></span>TIMELINE</a>
+  <a class="active" href="portfolio.html"><span class="dot"></span>PORTFOLIO</a>
+</nav>
+
+<main>
+  <h1>📁 PORTFOLIO</h1>
+
+  <!-- 작성 -->
+  <section class="write">
+    <textarea id="text" placeholder="기록하고 싶은 내용을 적어주세요. (필수)"></textarea>
+    <div class="actions">
+      <label>
+        파일/사진 첨부 (선택)
+        <input type="file" id="file">
+      </label>
+      <button onclick="addPost()">등록</button>
+    </div>
+  </section>
+
+  <!-- 목록 -->
+  <section class="grid" id="grid"></section>
+</main>
+
+<script>
+const KEY = "portfolio_posts";
+let posts = JSON.parse(localStorage.getItem(KEY) || "[]");
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(posts)); }
+
+function render(){
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  posts.forEach((p,i)=>{
+    const item = document.createElement("div");
+    item.className="item";
+
+    if(p.file){
+      const prev = document.createElement("div");
+      prev.className="preview";
+      if(p.type.startsWith("image")){
+        const img=document.createElement("img");
+        img.src=p.file; prev.appendChild(img);
+      }else{
+        prev.innerHTML=`<div class="file">📄</div>`;
+      }
+      item.appendChild(prev);
+    }
+
+    const meta=document.createElement("div");
+    meta.className="meta";
+    meta.innerHTML=`
+      <div class="text">${p.text}</div>
+      ${p.name?`<div class="name">${p.name}</div>`:""}
+      <button onclick="removePost(${i})">삭제</button>
+    `;
+    item.appendChild(meta);
+    grid.appendChild(item);
+  });
+}
+
+function addPost(){
+  const textEl=document.getElementById("text");
+  const fileEl=document.getElementById("file");
+  const text=textEl.value.trim();
+  if(!text) return;
+
+  const post={ text, date:Date.now() };
+
+  if(fileEl.files[0]){
+    const f=fileEl.files[0];
+    const r=new FileReader();
+    r.onload=e=>{
+      post.file=e.target.result;
+      post.type=f.type;
+      post.name=f.name;
+      posts.unshift(post); save(); render();
+    };
+    r.readAsDataURL(f);
+  }else{
+    posts.unshift(post); save(); render();
+  }
+
+  textEl.value=""; fileEl.value="";
+}
+
+function removePost(i){
+  posts.splice(i,1); save(); render();
+}
+
+render();
+</script>
+
+</body>
+</html>

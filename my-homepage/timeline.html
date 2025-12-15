@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIMELINE | 방명록</title>
+
+<style>
+:root{
+  --bg:#eef2f5;
+  --card:#ffffff;
+  --ink:#2c3240;
+  --muted:#7b8596;
+  --line:#e6ebf3;
+  --accent:#5f7ea6;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: "Noto Sans KR", system-ui, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+/* ===== 상단 네비 ===== */
+.nav{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:14px 24px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.nav a{
+  text-decoration:none;
+  color:var(--muted);
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.nav a.active{
+  color:var(--ink);
+  font-weight:600;
+}
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#bfc9d6,#5f6b7a);
+}
+
+/* ===== 상단 타이틀 ===== */
+header{
+  padding:20px 32px 10px;
+}
+header h1{
+  margin:0;
+  font-size:20px;
+  letter-spacing:0.3px;
+}
+
+/* ===== 전체 레이아웃 ===== */
+main{
+  max-width:900px;
+  margin:0 auto;
+  padding:16px;
+}
+
+/* ===== 방명록 카드 ===== */
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* ===== 버튼 ===== */
+.btn{
+  border:0;
+  padding:10px 18px;
+  border-radius:999px;
+  background:var(--accent);
+  color:white;
+  font-size:14px;
+  cursor:pointer;
+}
+.btn.secondary{
+  background:#dbe3ec;
+  color:#2c3240;
+}
+
+/* ===== 작성 영역 ===== */
+.write-box{
+  display:none;
+  margin-top:16px;
+  border-top:1px solid var(--line);
+  padding-top:16px;
+}
+.write-box textarea{
+  width:100%;
+  min-height:80px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:12px;
+  resize:none;
+  font-size:14px;
+}
+.write-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:8px;
+}
+
+/* ===== 타임라인 ===== */
+.timeline{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.entry{
+  padding:14px 16px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px solid var(--line);
+}
+.entry .meta{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.entry .text{
+  font-size:14px;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 상단 네비 -->
+<nav class="nav">
+  <a href="index.html"><span class="dot"></span>HOME</a>
+  <a class="active" href="timeline.html"><span class="dot"></span>TIMELINE</a>
+  <a href="portfolio.html"><span class="dot"></span>PORTFOLIO</a>
+
+</nav>
+
+<header>
+  <h1> TIMELINE · 방명록</h1>
+</header>
+
+<main>
+  <section class="card">
+    <button class="btn" onclick="toggleWrite()">방명록 쓰기</button>
+
+    <!-- 작성 영역 -->
+    <div class="write-box" id="writeBox">
+      <textarea id="guestText" placeholder="하고 싶은 말을 남겨주세요."></textarea>
+      <div class="write-actions">
+        <button class="btn secondary" onclick="toggleWrite()">취소</button>
+        <button class="btn" onclick="addEntry()">등록</button>
+      </div>
+    </div>
+
+    <!-- 타임라인 -->
+    <div class="timeline" id="timeline">
+      <div class="entry">
+        <div class="meta">2025.10.24</div>
+        <div class="text">방명록 첫 글입니다.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+function toggleWrite(){
+  const box = document.getElementById("writeBox");
+  box.style.display = box.style.display === "block" ? "none" : "block";
+}
+
+function addEntry(){
+  const textArea = document.getElementById("guestText");
+  const text = textArea.value.trim();
+  if(!text) return;
+
+  const timeline = document.getElementById("timeline");
+
+  const entry = document.createElement("div");
+  entry.className = "entry";
+
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  meta.textContent = new Date().toLocaleDateString("ko-KR");
+
+  const body = document.createElement("div");
+  body.className = "text";
+  body.textContent = text;
+
+  entry.appendChild(meta);
+  entry.appendChild(body);
+
+  timeline.prepend(entry);
+
+  textArea.value = "";
+  toggleWrite();
+}
+</script>
+
+</body>
+</html>
