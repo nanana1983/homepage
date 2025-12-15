@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIMELINE | 방명록</title>
+
+<style>
+:root{
+  --bg:#eef2f5;
+  --card:#ffffff;
+  --ink:#2c3240;
+  --muted:#7b8596;
+  --line:#e6ebf3;
+  --accent:#5f7ea6;
+  --dot-grad: radial-gradient(80% 80% at 20% 20%, #c6d2dd, #4a586f);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Noto Sans KR",system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+/* ===== NAV (HOME 기준 통일) ===== */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1280px;
+  margin:0 auto;
+  padding:8px 12px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.nav a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:700;
+  color:#39465a;
+  text-decoration:none;
+}
+.nav a .dot{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--dot-grad);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.5);
+}
+.nav a.active{
+  background:linear-gradient(180deg,#fff,#f3f7fc);
+}
+
+/* ===== HEADER ===== */
+header{
+  max-width:900px;
+  margin:0 auto;
+  padding:20px 16px 10px;
+}
+header h1{
+  margin:0;
+  font-size:20px;
+  letter-spacing:.3px;
+}
+
+/* ===== LAYOUT ===== */
+main{
+  max-width:900px;
+  margin:0 auto;
+  padding:16px;
+}
+
+/* ===== CARD ===== */
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:20px;
+  border:1px solid var(--line);
+  box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+/* ===== BUTTON ===== */
+.btn{
+  border:0;
+  padding:10px 18px;
+  border-radius:999px;
+  background:var(--accent);
+  color:#fff;
+  font-size:14px;
+  cursor:pointer;
+}
+.btn.secondary{
+  background:#dbe3ec;
+  color:#2c3240;
+}
+
+/* ===== WRITE ===== */
+.write-box{
+  display:none;
+  margin-top:16px;
+  border-top:1px solid var(--line);
+  padding-top:16px;
+}
+.write-box textarea{
+  width:100%;
+  min-height:80px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:12px;
+  resize:none;
+  font-size:14px;
+}
+.write-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:8px;
+}
+
+/* ===== TIMELINE ===== */
+.timeline{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.entry{
+  padding:14px 16px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px solid var(--line);
+}
+.entry .meta{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.entry .text{
+  font-size:14px;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <a href="index.html"><span class="dot"></span>HOME</a>
+    <a class="active" href="timeline.html"><span class="dot"></span>TIMELINE</a>
+    <a href="portfolio.html"><span class="dot"></span>PORTFOLIO</a>
+  </div>
+</div>
+
+<header>
+  <h1> TIMELINE · 방명록</h1>
+</header>
+
+<main>
+  <section class="card">
+    <button class="btn" onclick="toggleWrite()">방명록 쓰기</button>
+
+    <div class="write-box" id="writeBox">
+      <textarea id="guestText" placeholder="하고 싶은 말을 남겨주세요."></textarea>
+      <div class="write-actions">
+        <button class="btn secondary" onclick="toggleWrite()">취소</button>
+        <button class="btn" onclick="addEntry()">등록</button>
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline"></div>
+
+  </section>
+</main>
+
+<script>
+/* ===== 공통 키 ===== */
+const STORAGE_KEY = "timeline";
+
+/* ===== 데이터 로드 ===== */
+let timelineData = JSON.parse(
+  localStorage.getItem(STORAGE_KEY) || "[]"
+);
+
+/* ===== 저장 ===== */
+function saveTimeline(){
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(timelineData)
+  );
+}
+
+
+/* ===== 작성창 토글 ===== */
+function toggleWrite(){
+  const box = document.getElementById("writeBox");
+  box.style.display =
+    box.style.display === "block" ? "none" : "block";
+}
+
+/* ===== 글 추가 ===== */
+function addEntry(){
+  const textArea = document.getElementById("guestText");
+  const text = textArea.value.trim();
+  if(!text) return;
+
+  const now = new Date();
+
+  timelineData.unshift({
+    id: Date.now(),
+    text: text,
+    date: now.toLocaleDateString("ko-KR"),
+    created: now.getTime()
+  });
+
+  saveTimeline();
+  renderTimeline();
+
+  textArea.value = "";
+  toggleWrite();
+}
+
+/* ===== 화면 렌더 ===== */
+function renderTimeline(){
+  const timeline = document.getElementById("timeline");
+  timeline.innerHTML = "";
+
+  timelineData.forEach(item=>{
+    const entry = document.createElement("div");
+    entry.className = "entry";
+    entry.innerHTML = `
+      <div class="meta">${item.date}</div>
+      <div class="text">${item.text}</div>
+    `;
+    timeline.appendChild(entry);
+  });
+}
+
+/* ===== 최초 로딩 ===== */
+renderTimeline();
+</script>
+
+
+</body>
+</html>

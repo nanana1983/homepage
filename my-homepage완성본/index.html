@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>★ HOME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#eef2f5; --surface:#fff; --ink:#2c3240; --muted:#7b8596; --line:#e6ebf3;
+    --grad:linear-gradient(90deg,#a9bdca 0%, #8897ad 48%, #2f3c55 100%);
+    --dot-grad: radial-gradient(80% 80% at 20% 20%, #c6d2dd, #4a586f);
+    --chip:#f3f7fb; --shadow:0 10px 28px rgba(20,30,50,.08);
+    --radius:18px; --gap:12px; /* 간격 더 축소 */
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+
+  /* NAV – 좌우 간격 더 줄임, 동그라미 토글 */
+  .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1280px;margin:0 auto;padding:8px 12px;display:flex;gap:12px;align-items:center}
+  .nav a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;font-weight:700;color:#39465a;text-decoration:none}
+  .nav a .dot{width:16px;height:16px;border-radius:50%;background:var(--dot-grad);box-shadow:inset 0 1px 2px rgba(255,255,255,.5)}
+  .nav a.active{background:linear-gradient(180deg,#fff,#f3f7fc)}
+
+  /* BANNER – 깔끔한 그라데이션 */
+  .banner{max-width:1280px;margin:12px auto 0;padding:0 12px}
+  .banner-box{height:140px;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--grad)}
+
+  /* GRID – 좌우 여백/칸 간격 축소 */
+  .grid{max-width:1280px;margin:12px auto 16px;padding:0 12px;display:grid;gap:var(--gap);
+        grid-template-columns:280px 1fr 360px;grid-template-areas:"left center right";align-items:start}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px}
+  .card h3{margin:0 0 8px;font-size:13px;letter-spacing:.6px;color:var(--muted);text-transform:uppercase}
+  /* HOME 고정 규격 카드 */
+  .card {min-height: 180px;   /* 기본 카드 높이 */}
+
+  /* ===== HOME 왼쪽 카드 규격 고정 ===== */
+.left .card {
+  min-height: 200px;
+}
+
+.left .card .list {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 내용이 많아질 경우 대비 */
+.left .card .list {
+  overflow-y: auto;
+}
+
+
+
+  .left{grid-area:left;display:grid;gap:var(--gap)}
+  .center{grid-area:center;display:grid;gap:var(--gap);grid-template-columns:1fr 1fr}
+  .right{grid-area:right;display:grid;gap:var(--gap)}
+
+  /* 리스트 */
+  .list{display:flex;flex-direction:column;gap:8px}
+  .item{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:12px;background:#fafbfd;border:1px solid #eef2f8}
+  .item span{font-size:12px;color:var(--muted)}
+
+  /* ── 네이버 시계 + 달력 카드 ── */
+  .clock-card{display:grid;grid-template-rows:auto 1fr;align-items:center;justify-items:center}
+  #clock{font-size:48px;font-weight:800;letter-spacing:2px;margin:8px 0 6px}
+  .calendar{width:100%;max-width:440px}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin:8px 0}
+  .cal-head button{border:none;background:var(--chip);padding:6px 10px;border-radius:10px;cursor:pointer}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cal-cell{height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;color:#4a566c}
+  .cal-cell.muted{opacity:.4}
+  .cal-cell.today{background:#6b86a4;color:#fff;font-weight:800}
+  .weekday{font-size:12px;color:var(--muted);text-transform:uppercase}
+
+  /* 오하아사 카드(붙여넣기 파싱 유지) */
+  .ohaasa .row{display:flex;gap:8px;min-height:36px;flex-wrap:wrap}
+  .btn{background:var(--grad);color:#fff;border:none;padding:8px 12px;border-radius:12px;cursor:pointer;font-weight:700}
+  .btn.ghost{background:#e9edf6;color:#2c3240}
+  .desc{color:var(--muted);margin:0 0 6px}
+  .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .rank{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+
+  min-height:180px;           /* ← 길이 늘리기 */
+  padding:12px 6px;
+
+  border:1px solid #eef2f8;
+  background:#fafbfd;
+  border-radius:16px;
+}
+
+  .badge{
+  width:32px;
+  height:32px;
+  border-radius:12px;
+  background:var(--chip);
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+  .name{
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size:14px;
+  line-height:1.2;
+  color:#39465a;
+}
+
+.yt-box{
+  width:100%;
+  aspect-ratio:16/9;
+  background:#000;
+  border-radius:12px;
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+
+
+  .date{font-size:12px;color:var(--muted);margin-top:6px;text-align:right}
+
+  /* 우측 패널: 유튜브 세로 줄임 + sticky 고정 */
+  .player{position:sticky; top:12px; border-radius:14px; overflow:hidden; padding:0; border:1px solid var(--line)}
+  .player-head{padding:8px 10px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .player-title{display:flex;gap:8px;align-items:center;font-weight:700}
+  .ctrls{display:flex;gap:6px}
+  .ctrls button{border:none;background:#ffffff22;color:#fff;padding:5px 8px;border-radius:8px;cursor:pointer;font-weight:600}
+  #ytWrap{width:100%;height:200px} /* ← 세로 줄임 */
+  .bar-wrap{height:6px;background:#e9eef6;margin:0 10px 10px;border-radius:999px;overflow:hidden}
+  .bar{height:100%;width:0%;background:linear-gradient(90deg,#cfe0ff,#90a7d6,#5c6d93)}
+  .meta{display:flex;justify-content:space-between;padding:0 10px 10px;font-size:12px;color:var(--muted)}
+
+  @media (max-width: 1100px){
+    .grid{grid-template-columns:1fr;grid-template-areas:"center" "left" "right"}
+    .center{grid-template-columns:1fr}
+    .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:stretch;}
+
+  }
+</style>
+
+
+
+</head>
+<body>
+  <!-- NAV -->
+  <div class="nav">
+  <div class="nav-inner">
+    <a class="active" href="index.html">
+      <span class="dot"></span>HOME
+    </a>
+    <a href="timeline.html">
+      <span class="dot"></span>TIMELINE
+    </a>
+    <a href="portfolio.html">
+      <span class="dot"></span>PORTFOLIO
+    </a>
+  </div>
+</div>
+
+
+  <!-- BANNER -->
+  <div class="banner"><div class="banner-box"></div></div>
+
+  <!-- GRID -->
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="left">
+      <div class="card">
+        <h3>Timeline</h3>
+         <div class="list" id="home-timeline">
+
+        </div>
+      </div>
+      <div class="card">
+        <h3>PORTFOLIO</h3>
+        <div class="list" id="home-portfolio">
+
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="center">
+      <!-- 네이버 시계 + 달력 -->
+      <div class="card clock-card">
+        <h3>네이버 시계 · 달력</h3>
+        <div id="clock">--:--:--</div>
+        <div class="calendar">
+          <div class="cal-head">
+            <button id="prevM">◀</button>
+            <div>
+              <strong id="calTitle">2025. 11</strong>
+              <div style="font-size:12px;color:var(--muted);text-align:center">네이버 달력 스타일</div>
+            </div>
+            <button id="nextM">▶</button>
+          </div>
+          <div class="cal-grid" id="weekday">
+            <div class="weekday">일</div><div class="weekday">월</div><div class="weekday">화</div>
+            <div class="weekday">수</div><div class="weekday">목</div><div class="weekday">금</div><div class="weekday">토</div>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+      </div>
+
+      <!-- 오하아사 (붙여넣기 파싱) -->
+      <div class="card ohaasa">
+        <h3>오하아사 · 오늘의 상위 5</h3>
+        <p class="desc">트윗 본문을 붙여넣으면 1~5위가 자동 파싱되어 저장됩니다.</p>
+        <div class="row" style="margin-bottom:6px">
+          <button class="btn" onclick="openProfile()">프로필 열기 (@Hi_Ohaasa)</button>
+          <button class="btn ghost" onclick="pasteSample()">샘플</button>
+          <button class="btn" onclick="pasteToday()">오늘 트윗 텍스트 붙여넣기</button>
+          <button class="btn ghost" onclick="clearRanks()">지우기</button>
+        </div>
+        <div class="grid5" id="grid5"></div>
+        <div class="date" id="rankDate"></div>
+      </div>
+    </div>
+    
+
+
+
+    <!-- RIGHT -->
+    <div class="right">
+      <div class="card" style="margin-bottom:var(--gap)">
+        <h3>내 활동</h3>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ccd7e4,#99a9c2);display:grid;place-items:center;color:#fff;font-weight:800">A</div>
+          <div><div style="font-weight:700">admin</div><div style="font-size:12px;color:var(--muted)">Lv.10 · 활동</div></div>
+        </div>
+        
+      </div>
+
+      <!-- 유튜브 (세로 축소 + sticky) -->
+      <div class="card player">
+  <div class="player-head">
+    <div class="player-title">
+      <span id="trackTitle">Love story</span>
+      <span id="trackArtist" style="opacity:.9">Indila</span>
+    </div>
+    <div class="ctrls">
+      <button id="prevBtn">◀</button>
+      <button id="playBtn">▶︎/⏸</button>
+      <button id="nextBtn">▶</button>
+      <button id="loopBtn">⟲</button>
+    </div>
+  </div>
+
+  <!-- 👇 여기 -->
+  <div class="yt-box">
+    <div id="player"></div>
+  </div>
+
+  <div class="meta">
+    <span id="elapsed">0:00</span>
+    <span id="duration">0:00</span>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+<script>
+
+
+/* =========================================================
+   CLOCK (네이버 스타일 디지털)
+========================================================= */
+const clockEl = document.getElementById('clock');
+const two = n => String(n).padStart(2,'0');
+
+function tick(){
+  const d = new Date();
+  clockEl.textContent =
+    `${two(d.getHours())}:${two(d.getMinutes())}:${two(d.getSeconds())}`;
+}
+setInterval(tick,1000);
+tick();
+
+/* =========================================================
+   CALENDAR
+========================================================= */
+const calTitle = document.getElementById('calTitle');
+const calGrid  = document.getElementById('calGrid');
+
+let view = new Date();
+view.setDate(1);
+
+function renderCalendar(){
+  calGrid.innerHTML = '';
+  const y = view.getFullYear();
+  const m = view.getMonth();
+
+  calTitle.textContent = `${y}. ${m+1}`;
+
+  const first = new Date(y,m,1).getDay();
+  const last  = new Date(y,m+1,0).getDate();
+  const prevLast = new Date(y,m,0).getDate();
+
+  for(let i=0;i<first;i++){
+    addCell(prevLast-first+1+i,true);
+  }
+
+  const today = new Date();
+  for(let d=1; d<=last; d++){
+    const c = addCell(d,false);
+    if(
+      y===today.getFullYear() &&
+      m===today.getMonth() &&
+      d===today.getDate()
+    ) c.classList.add('today');
+  }
+
+  const filled = first + last;
+  for(let i=0;i<(7-(filled%7))%7;i++){
+    addCell(i+1,true);
+  }
+}
+
+function addCell(text, muted){
+  const c = document.createElement('div');
+  c.className = 'cal-cell' + (muted ? ' muted' : '');
+  c.textContent = text;
+  calGrid.appendChild(c);
+  return c;
+}
+
+document.getElementById('prevM').onclick = () => {
+  view.setMonth(view.getMonth()-1);
+  renderCalendar();
+};
+document.getElementById('nextM').onclick = () => {
+  view.setMonth(view.getMonth()+1);
+  renderCalendar();
+};
+
+renderCalendar();
+
+/* =========================================================
+   OHAASA (트윗 붙여넣기 → 로컬 저장)
+========================================================= */
+const KEY_RANKS='ohaasa_ranks_v1';
+const KEY_DATE ='ohaasa_date_v1';
+
+const grid5 = document.getElementById('grid5');
+const dateEl = document.getElementById('rankDate');
+
+function openProfile(){
+  window.open('https://x.com/Hi_Ohaasa','_blank');
+}
+
+function renderRanks(r){
+  grid5.innerHTML='';
+  const list = r?.length ? r :
+    [1,2,3,4,5].map(v=>({rank:v,name:'-'}));
+
+  list.forEach(v=>{
+    const el=document.createElement('div');
+    el.className='rank';
+    el.innerHTML=
+      `<div class="badge">${v.rank}</div>
+       <div class="name">${v.name}</div>`;
+    grid5.appendChild(el);
+  });
+
+  dateEl.textContent = localStorage.getItem(KEY_DATE) || '';
+}
+
+function saveRanks(r){
+  localStorage.setItem(KEY_RANKS, JSON.stringify(r));
+  const d=new Date();
+  localStorage.setItem(
+    KEY_DATE,
+    `업데이트: ${d.getFullYear()}.${two(d.getMonth()+1)}.${two(d.getDate())}`
+  );
+}
+
+function clearRanks(){
+  localStorage.removeItem(KEY_RANKS);
+  localStorage.removeItem(KEY_DATE);
+  renderRanks([]);
+}
+
+function loadRanks(){
+  try{
+    renderRanks(JSON.parse(localStorage.getItem(KEY_RANKS)||'[]'));
+  }catch{
+    renderRanks([]);
+  }
+}
+
+function parseFromText(text){
+  const rx=/([1-5])\s*위[\s:：\-–~]*([^\n\r]+)/g;
+  let m,res=[];
+  while((m=rx.exec(text))!==null){
+    res[m[1]-1]={rank:+m[1],name:m[2].trim()};
+  }
+  const top5=res.filter(Boolean).slice(0,5);
+  if(!top5.length){
+    alert('상위 5를 찾지 못했어요.');
+    return;
+  }
+  saveRanks(top5);
+  renderRanks(top5);
+}
+
+function pasteToday(){
+  const t=prompt('오늘자 트윗 본문을 붙여넣어 주세요');
+  if(t) parseFromText(t);
+}
+
+function pasteSample(){
+  parseFromText(
+`1위 물고기자리
+2위 전갈자리
+3위 게자리
+4위 쌍둥이자리
+5위 황소자리`
+  );
+}
+
+loadRanks();
+
+/* =========================================================
+   HOME TIMELINE / PORTFOLIO (핵심 기능)
+========================================================= */
+const TIMELINE_KEY = 'timeline_data';
+const PORTFOLIO_KEY = 'portfolio';
+
+function loadHomeTimeline(){
+  const data = JSON.parse(localStorage.getItem('timeline') || '[]');
+  const wrap = document.getElementById('home-timeline');
+  if(!wrap) return;
+
+  wrap.innerHTML = '';
+
+  data.slice(0,3).forEach(v=>{
+    const item = document.createElement('div');
+    item.className = 'item'; // ⭐ 핵심
+
+    item.innerHTML = `
+      <b>${v.text}</b>
+      <span>${v.date}</span>
+    `;
+
+    wrap.appendChild(item);
+  });
+}
+
+function loadHomePortfolio(){
+  const data = JSON.parse(localStorage.getItem('portfolio') || '[]');
+  const wrap = document.getElementById('home-portfolio');
+  if(!wrap) return;
+
+  wrap.innerHTML = '';
+
+  data.slice(0,3).forEach(v=>{
+    const item = document.createElement('div');
+    item.className = 'item'; // ⭐ 타임라인과 동일
+
+    item.innerHTML = `
+      <b>${v.text}</b>
+      <span>${v.date}</span>
+    `;
+
+    wrap.appendChild(item);
+  });
+}
+
+
+function loadHome(){
+  loadHomeTimeline();
+  loadHomePortfolio();
+}
+
+loadHome();
+setInterval(loadHome, 3000);
+
+
+
+/* =========================================================
+   YOUTUBE PLAYER
+========================================================= */
+const VIDEOS=[
+  {
+    id:'eEjiiq_FQwM',
+    title:'Odd',
+    artist:'가을'
+  }
+];
+
+let idx=0, loop=false, player=null;
+
+const tag=document.createElement('script');
+tag.src="https://www.youtube.com/iframe_api";
+document.body.appendChild(tag);
+
+window.onYouTubeIframeAPIReady=function(){
+  player=new YT.Player('player',{
+    height:'200',
+    width:'560',
+    videoId:VIDEOS[idx].id,
+    playerVars:{
+      autoplay: 1,        // 자동재생
+      loop: 1,            // 반복
+      playlist: VIDEOS[idx].id, // loop 필수 옵션
+      playsinline: 1,
+      controls: 0,        // 컨트롤 숨김 (선택)
+      rel: 0
+    },
+    events:{onStateChange:onState}
+  });
+
+  setMeta();
+};
+
+function setMeta(){
+  document.getElementById('trackTitle').textContent=VIDEOS[idx].title;
+  document.getElementById('trackArtist').textContent=VIDEOS[idx].artist;
+}
+
+function onState(e){
+  if(e.data===YT.PlayerState.ENDED){
+    loop ? player.playVideo() : next();
+  }
+}
+
+function load(i){
+  idx=(i+VIDEOS.length)%VIDEOS.length;
+  player.loadVideoById(VIDEOS[idx].id);
+  setMeta();
+}
+
+function next(){ load(idx+1); }
+function prev(){ load(idx-1); }
+
+
+
+</script>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+</body>
+</html>

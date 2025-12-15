@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PORTFOLIO</title>
+
+<style>
+:root{
+  --bg:#eef2f5;
+  --card:#ffffff;
+  --ink:#2c3240;
+  --muted:#7b8596;
+  --line:#e6ebf3;
+  --accent:#5f7ea6;
+  --dot-grad: radial-gradient(80% 80% at 20% 20%, #c6d2dd, #4a586f);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Noto Sans KR",system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+/* ===== NAV (HOME 기준 통일) ===== */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1280px;
+  margin:0 auto;
+  padding:8px 12px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.nav a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:700;
+  color:#39465a;
+  text-decoration:none;
+}
+.nav a .dot{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--dot-grad);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.5);
+}
+.nav a.active{
+  background:linear-gradient(180deg,#fff,#f3f7fc);
+}
+
+/* ===== LAYOUT ===== */
+main{
+  max-width:1000px;
+  margin:0 auto;
+  padding:24px;
+}
+h1{
+  font-size:20px;
+  margin-bottom:12px;
+}
+
+/* ===== WRITE ===== */
+.write{
+  background:var(--card);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:20px;
+  border:1px solid var(--line);
+}
+.write textarea{
+  width:100%;
+  min-height:90px;
+  resize:none;
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:12px;
+  font-size:14px;
+}
+.write .actions{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+}
+.write label{
+  font-size:13px;
+  color:var(--muted);
+  cursor:pointer;
+}
+.write input{display:none}
+.write button{
+  border:0;
+  padding:8px 16px;
+  border-radius:999px;
+  background:var(--accent);
+  color:#fff;
+  cursor:pointer;
+}
+
+/* ===== GRID ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:16px;
+}
+.item{
+  background:var(--card);
+  border-radius:14px;
+  border:1px solid var(--line);
+  overflow:hidden;
+}
+.preview{
+  height:140px;
+  background:#f4f6f9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.file{font-size:40px}
+.meta{
+  padding:12px;
+}
+.meta .text{
+  font-size:14px;
+  line-height:1.5;
+  white-space:pre-wrap;
+  margin-bottom:8px;
+}
+.meta .name{
+  font-size:12px;
+  color:var(--muted);
+}
+.meta button{
+  margin-top:8px;
+  border:0;
+  background:#e6ebf3;
+  border-radius:8px;
+  padding:6px 10px;
+  font-size:12px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <a href="index.html"><span class="dot"></span>HOME</a>
+    <a href="timeline.html"><span class="dot"></span>TIMELINE</a>
+    <a class="active" href="portfolio.html"><span class="dot"></span>PORTFOLIO</a>
+  </div>
+</div>
+
+<main>
+  <h1> PORTFOLIO</h1>
+
+  <section class="write">
+    <textarea id="text" placeholder="기록하고 싶은 내용을 적어주세요. (필수)"></textarea>
+    <div class="actions">
+      <label>
+        파일/사진 첨부 (선택)
+        <input type="file" id="file">
+      </label>
+      <button onclick="addPost()">등록</button>
+    </div>
+  </section>
+
+  <section class="grid" id="grid"></section>
+</main>
+<script>
+const STORAGE_KEY = "portfolio";
+
+/* 기존 데이터 불러오기 */
+let posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+/* 저장 */
+function savePosts(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+}
+
+/* 렌더링 */
+function renderPortfolio(){
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  posts.forEach((post, index) => {
+    const item = document.createElement("div");
+    item.className = "item";
+
+    /* 첨부 미리보기 */
+    if(post.file){
+      const preview = document.createElement("div");
+      preview.className = "preview";
+
+      if(post.type.startsWith("image")){
+        const img = document.createElement("img");
+        img.src = post.file;
+        preview.appendChild(img);
+      }else{
+        preview.innerHTML = `<div class="file">📄</div>`;
+      }
+
+      item.appendChild(preview);
+    }
+
+    /* 내용 */
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.innerHTML = `
+      <div class="text">${post.text}</div>
+      <div class="name">${post.date}</div>
+      <button onclick="removePost(${index})">삭제</button>
+    `;
+
+    item.appendChild(meta);
+    grid.appendChild(item);
+  });
+}
+
+/* 등록 */
+function addPost(){
+  const textEl = document.getElementById("text");
+  const fileEl = document.getElementById("file");
+
+  const text = textEl.value.trim();
+  if(!text) return;
+
+  const post = {
+    text,
+    date: new Date().toLocaleDateString("ko-KR")
+  };
+
+  if(fileEl.files[0]){
+    const file = fileEl.files[0];
+    const reader = new FileReader();
+    reader.onload = e => {
+      post.file = e.target.result;
+      post.type = file.type;
+      posts.unshift(post);
+      savePosts();
+      renderPortfolio();
+    };
+    reader.readAsDataURL(file);
+  }else{
+    posts.unshift(post);
+    savePosts();
+    renderPortfolio();
+  }
+
+  textEl.value = "";
+  fileEl.value = "";
+}
+
+/* 삭제 */
+function removePost(index){
+  posts.splice(index, 1);
+  savePosts();
+  renderPortfolio();
+}
+
+/* 초기 렌더 */
+renderPortfolio();
+</script>
+
+</body>
+</html>
